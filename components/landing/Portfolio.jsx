@@ -91,7 +91,7 @@ export default function PortfolioShowcase() {
     
     const interval = setInterval(() => {
       setActiveIndex((prevIndex) => (prevIndex + 1) % portfolioData.length);
-    }, 3000);
+    }, 2500);
 
     return () => clearInterval(interval);
   }, [isPaused]);

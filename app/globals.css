@@ -96,3 +96,40 @@ p {
 .pause-on-hover:hover .animate-marquee {
   animation-play-state: paused;
 }
+
+/* --- CUSTOM PREMIUM SCROLLBAR --- */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) var(--background);
+}
+
+/* WebKit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 8px; /* Sleek, thin vertical scrollbar */
+  height: 8px; /* Sleek, thin horizontal scrollbar */
+}
+
+/* The track (background) of the scrollbar */
+::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 10px;
+}
+
+/* The draggable thumb */
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 10px; /* Pill shape */
+  border: 2px solid var(--background); /* Adds a subtle padding effect inside the track */
+}
+
+/* Thumb hover state - subtle transition to a darker slate */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted); 
+}
+
+/* Thumb active/clicking state - uses your primary brand color */
+::-webkit-scrollbar-thumb:active {
+  background: var(--brand-primary);
+}

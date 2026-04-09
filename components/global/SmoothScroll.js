@@ -1,20 +1,52 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { ReactLenis } from "@studio-freight/react-lenis";
+import gsap from "gsap";
+import { usePathname, useSearchParams } from "next/navigation"; // Added Next.js router hooks
 
 export default function SmoothScroll({ children }) {
+  const lenisRef = useRef(null);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    // 1. Hook Lenis into GSAP's ticker
+    function update(time) {
+      lenisRef.current?.lenis?.raf(time * 1000);
+    }
+
+    gsap.ticker.add(update);
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      gsap.ticker.remove(update);
+    };
+  }, []);
+
+  // 2. Trigger Lenis to recalculate dimensions every time the URL changes.
+  // This completely fixes the "back button" bug.
+  useEffect(() => {
+    if (lenisRef.current?.lenis) {
+      lenisRef.current.lenis.resize();
+    }
+  }, [pathname, searchParams]);
+
   return (
     <ReactLenis
+      ref={lenisRef}
       root
+      autoRaf={false} // CRITICAL FIX: Turns off default loop so GSAP takes over
       options={{
-        // These settings are tuned for a "Premium SaaS" feel
-        lerp: 0.08,        // Lower is smoother, higher is more responsive (0.05 - 0.1 is the sweet spot)
-        duration: 1.2,     // How long the scroll animation lasts
-        smoothWheel: true, // Enables smooth scrolling for mouse wheels
-        wheelMultiplier: 1, // Speed of the scroll
-        touchMultiplier: 2, // Smoothness for touch devices
-        infinite: false,   // Set to true only if you want an endless loop
+        lerp: 0.07,
+        duration: 1.2,
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 1.5,
+        infinite: false,
+        syncTouch: true,
       }}
+      className="min-h-screen w-full" 
     >
       {children}
     </ReactLenis>
