@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-// import { ArrowUpRight, Twitter, Linkedin, Youtube, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
@@ -56,7 +55,7 @@ export default function Footer() {
       // Set initial states
       gsap.set(leftColumnRef.current, { opacity: 0, y: 40 });
       gsap.set(linkGroupsRef.current, { opacity: 0, y: 30 });
-      gsap.set(giantTextRef.current, { yPercent: 50, opacity: 0, scale: 0.95 });
+      gsap.set(giantTextRef.current, { yPercent: 30, opacity: 0, scale: 0.95 });
       gsap.set(bottomBarRef.current, { opacity: 0 });
 
       // Main Footer Reveal Timeline
@@ -85,12 +84,12 @@ export default function Footer() {
         },
         "-=0.6" // Overlap with the left column
       )
-      // Parallax & scale up the giant text
+      // Reveal the giant text
       .to(
         giantTextRef.current,
         {
           yPercent: 0,
-          opacity: 0.05, // Keep it subtle like a watermark
+          opacity: 1, 
           scale: 1,
           duration: 1.5,
           ease: "expo.out",
@@ -133,7 +132,7 @@ export default function Footer() {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 w-full z-10">
         
         {/* --- TOP SECTION: Brand & Links --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 pb-10">
           
           {/* Left: Brand Details */}
           <div ref={leftColumnRef} className="lg:col-span-5 flex flex-col items-start">
@@ -231,11 +230,11 @@ export default function Footer() {
       </div>
 
       {/* --- MIDDLE SECTION: Giant Dynamic Text --- */}
-      {/* Kept out of the z-10 container so it spans the absolute edge of the screen */}
-      <div className="w-full relative py-6 md:py-10 select-none pointer-events-none overflow-hidden flex items-end justify-center">
+      {/* Centered, no blue hover, with substantial padding all around */}
+      <div className="w-full relative py-16 md:py-24 px-6 md:px-12 select-none overflow-hidden flex items-center justify-center">
         <h2 
           ref={giantTextRef}
-          className="text-[16vw] font-black tracking-tighter text-heading leading-[0.8] text-center uppercase whitespace-nowrap"
+          className="text-[clamp(3rem,12vw,14rem)] font-black tracking-tighter leading-[0.8] text-center uppercase whitespace-nowrap text-heading transition-transform duration-500 ease-out hover:scale-[1.02]"
         >
           Titan Capital
         </h2>
