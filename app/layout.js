@@ -1,4 +1,4 @@
-import { Suspense } from "react"; // <-- 1. Import Suspense
+import { Suspense } from "react";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/global/Navbar";
@@ -13,7 +13,6 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 // --- UPPER SEO METADATA ---
 export const metadata = {
-  // ... (keep your existing metadata exactly as it is)
   title: {
     default: "Titan Capital | Backing Unstoppable Founders",
     template: "%s | Titan Capital"
@@ -30,23 +29,22 @@ export default function RootLayout({ children }) {
       className={`${plusJakarta.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-body font-sans selection:bg-primary selection:text-white">
-        <SmoothScroll>
-          
-          {/* 2. Wrap Navbar in Suspense */}
-          <Suspense fallback={<div className="h-16 w-full"></div>}>
+        
+        {/* Wrap the ENTIRE SmoothScroll provider in Suspense */}
+        <Suspense fallback={null}>
+          <SmoothScroll>
+            
             <Navbar />
-          </Suspense>
 
-          <main className="flex-grow">
-            {children}
-          </main>
+            <main className="flex-grow">
+              {children}
+            </main>
 
-          {/* 3. Wrap Footer in Suspense (just in case it also uses searchParams) */}
-          <Suspense fallback={<div className="h-20 w-full"></div>}>
             <Footer />
-          </Suspense>
 
-        </SmoothScroll>
+          </SmoothScroll>
+        </Suspense>
+
       </body>
     </html>
   );
