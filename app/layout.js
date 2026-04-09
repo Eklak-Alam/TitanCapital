@@ -1,3 +1,4 @@
+import { Suspense } from "react"; // <-- 1. Import Suspense
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/global/Navbar";
@@ -12,61 +13,14 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 // --- UPPER SEO METADATA ---
 export const metadata = {
+  // ... (keep your existing metadata exactly as it is)
   title: {
     default: "Titan Capital | Backing Unstoppable Founders",
     template: "%s | Titan Capital"
   },
   description: "India's premier seed-stage venture capital firm. We partner with world-class entrepreneurs to build the next generation of Indicorns.",
   keywords: ["Venture Capital", "Seed Funding India", "Titan Capital", "Startup Investment", "Indicorns", "Kunal Bahl", "Rohit Bansal"],
-  authors: [{ name: "Titan Capital" }],
-  creator: "Titan Capital",
-  publisher: "Titan Capital",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  // OpenGraph for LinkedIn & Facebook
-  openGraph: {
-    title: "Titan Capital | Backing Unstoppable Founders",
-    description: "Partnering with India's most ambitious founders to build profitable, scalable Indicorns.",
-    url: "https://titancapital.vc", // Replace with actual URL
-    siteName: "Titan Capital",
-    images: [
-      {
-        url: "/og-image.png", // Create a 1200x630 image in /public
-        width: 1200,
-        height: 630,
-        alt: "Titan Capital Branding",
-      },
-    ],
-    locale: "en_IN",
-    type: "website",
-  },
-  // Twitter Card
-  twitter: {
-    card: "summary_large_image",
-    title: "Titan Capital | Seed-Stage Venture Capital",
-    description: "We back founders who create a better world.",
-    creator: "@TitanCapitalVC",
-    images: ["/og-image.png"], 
-  },
-  // Favicons
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
+  // ... rest of your metadata
 };
 
 export default function RootLayout({ children }) {
@@ -76,13 +30,22 @@ export default function RootLayout({ children }) {
       className={`${plusJakarta.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-body font-sans selection:bg-primary selection:text-white">
-        {/* Everything inside SmoothScroll gets the buttery Lenis feel */}
         <SmoothScroll>
-          <Navbar />
+          
+          {/* 2. Wrap Navbar in Suspense */}
+          <Suspense fallback={<div className="h-16 w-full"></div>}>
+            <Navbar />
+          </Suspense>
+
           <main className="flex-grow">
             {children}
           </main>
-          <Footer />
+
+          {/* 3. Wrap Footer in Suspense (just in case it also uses searchParams) */}
+          <Suspense fallback={<div className="h-20 w-full"></div>}>
+            <Footer />
+          </Suspense>
+
         </SmoothScroll>
       </body>
     </html>
